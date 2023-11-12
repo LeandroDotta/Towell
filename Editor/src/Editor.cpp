@@ -17,6 +17,9 @@ public:
 
 int main() 
 {
+	Towell::Log::Init();
+	TW_INFO("Initializing Towell Engine");
+
 	Editor* editor = new Editor();
 	editor->Run();
 	delete editor;
