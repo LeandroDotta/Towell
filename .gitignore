@@ -1,5 +1,9 @@
 # Binaries
 out/
+obj/
 
 # Visual Studio
 .vs
+*.sln
+*.vcxproj
+*.user

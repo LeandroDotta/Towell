@@ -1,4 +1,4 @@
-#include "../Towell.h"
+#include <Towell.h>
 
 class Editor : public Towell::Application
 {
