@@ -7,23 +7,18 @@ namespace Towell
 	Log* Log::s_EngineLogger;
 	Log* Log::s_EditorLogger;
 
-	const char* Log::m_ColorTrace = "\033[36m";
-	const char* Log::m_ColorInfo = "\033[37m";
-	const char* Log::m_ColorWarn = "\033[33m";
-	const char* Log::m_ColorError = "\033[1;31m";
-
-	Log::Log(char* name, int level) 
+	Log::Log(char* name, Level level)
 	{
 		this->m_Name = name;
-		this-> m_Level = level;
+		this->m_Level = level;
 	}
 
 	Log::~Log() 
 	{
 		delete Log::m_Name;
 	}
-
-	void Log::Init(int level) 
+	
+	void Log::Init(Level level)
 	{
 		s_EngineLogger = new Log("Towell", level);
 		s_EditorLogger = new Log("Editor", level);
@@ -61,7 +56,7 @@ namespace Towell
 		LogMessage(LevelError, message);
 	}
 
-	void Log::LogMessage(int level, char* message)
+	void Log::LogMessage(Level level, char* message)
 	{
 		time_t now = time(NULL);
 		std::string time = ctime(&now);

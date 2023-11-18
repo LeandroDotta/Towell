@@ -7,12 +7,11 @@ namespace Towell
 	class Log
 	{
 	public:
-		static const int LevelTrace = 0;
-		static const int LevelInfo = 1;
-		static const int LevelWarn = 2;
-		static const int LevelError = 3;
+		enum Level {
+			LevelTrace, LevelInfo, LevelWarn, LevelError
+		};
 
-		static void Init(int level);
+		static void Init(Level level);
 
 		inline static Log* GetEngineLogger() { return s_EngineLogger; }
 		inline static Log* GetEditorLogger() { return s_EditorLogger; }
@@ -26,20 +25,15 @@ namespace Towell
 		static Log* s_EngineLogger;
 		static Log* s_EditorLogger;
 
-		static const char* m_ColorTrace;
-		static const char* m_ColorInfo;
-		static const char* m_ColorWarn;
-		static const char* m_ColorError;
-
 		char* m_Name;
-		int m_Level;
+		Level m_Level;
 
-		Log(char* name, int level);
+		Log(char* name, Level level);
 		~Log();
 
-		void LogMessage(int level, char* message);
+		void LogMessage(Level level, char* message);
 
-		inline char* GetLevelText(int level) {
+		inline static const char* GetLevelText(Level level) {
 			switch (level)
 			{
 			case LevelTrace:
@@ -53,17 +47,17 @@ namespace Towell
 			}
 		}
 
-		inline const char* GetLevelColor(int level) {
+		inline static const char* GetLevelColor(Level level) {
 			switch (level)
 			{
 			case LevelTrace:
-				return m_ColorTrace;
+				return "\033[36m";
 			case LevelInfo:
-				return m_ColorInfo;
+				return "\033[37m";
 			case LevelWarn:
-				return m_ColorWarn;
+				return "\033[33m";
 			case LevelError:
-				return m_ColorError;
+				return "\033[1;31m";
 			}
 		}
 	};
