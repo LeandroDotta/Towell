@@ -1,5 +1,7 @@
 #include <Towell.h>
 
+using namespace Towell;
+
 class Editor : public Towell::Application
 {
 public:
@@ -17,8 +19,8 @@ public:
 
 int main() 
 {
-	Towell::Log::Init();
-	TW_INFO("Initializing Towell Engine");
+	Log::Init(Log::LevelTrace);
+	TW_INFO("Initializing Towell Engine...");
 
 	Editor* editor = new Editor();
 	editor->Run();
