@@ -1,28 +1,10 @@
 #include <Towell.h>
+#include "Editor.h"
 
-using namespace Towell;
-
-class Editor : public Towell::Application
+Editor::Editor()
 {
-public:
-	Editor()
-	{
+}
 
-	}
-
-	~Editor()
-	{
-
-	}
-};		
-
-
-int main() 
+Editor::~Editor()
 {
-	Log::Init(Log::LevelTrace);
-	TW_INFO("Initializing Towell Engine...");
-
-	Editor* editor = new Editor();
-	editor->Run();
-	delete editor;
 }
