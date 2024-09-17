@@ -4,7 +4,7 @@ workspace "Towell"
 
 	configurations 
 	{ 
-		"Debug", 
+		"Debug",
 		"Release" 
 	}
 
