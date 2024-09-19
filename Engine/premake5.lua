@@ -18,6 +18,24 @@ project "Engine"
 		"src"
 	}
 
+	externalincludedirs 
+	{
+		"%{extDir.SDL2}/include",
+	}
+
+	libdirs
+	{
+		"%{extDir.SDL2}/lib/x64"
+	}
+
+	links
+	{
+		"SDL2",
+		"SDL2main",
+		"opengl32"
+	}
+
+
 	filter "system:windows"
 		systemversion "latest"
 

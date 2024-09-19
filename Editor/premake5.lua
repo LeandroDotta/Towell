@@ -25,6 +25,11 @@ project "Editor"
 
 	filter "system:windows"
 		systemversion "latest"
+		postbuildcommands 
+		{
+			-- Copy SDL2.dll to the output directory
+			"{COPY} %{extDir.SDL2}/lib/x64/SDL2.dll %{cfg.targetdir}"
+		}
 
 
 	filter "configurations:Debug"
