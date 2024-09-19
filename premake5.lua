@@ -1,3 +1,6 @@
+extDir = {}
+extDir["SDL2"] = "%{wks.location}/ThirdParty/SDL2"
+
 workspace "Towell"
 	architecture "x86_64"
 	startproject "Editor"
