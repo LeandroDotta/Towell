@@ -1,5 +1,6 @@
 extDir = {}
 extDir["SDL2"] = "%{wks.location}/ThirdParty/SDL2"
+extDir["glew"] = "%{wks.location}/ThirdParty/glew"
 
 workspace "Towell"
 	architecture "x86_64"

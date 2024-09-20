@@ -21,18 +21,21 @@ project "Engine"
 	externalincludedirs 
 	{
 		"%{extDir.SDL2}/include",
+		"%{extDir.glew}/include",
 	}
 
 	libdirs
 	{
-		"%{extDir.SDL2}/lib/x64"
+		"%{extDir.SDL2}/lib/x64",
+		"%{extDir.glew}/lib/Release/x64",
 	}
 
 	links
 	{
 		"SDL2",
 		"SDL2main",
-		"opengl32"
+		"opengl32",
+		"glew32",
 	}
 
 

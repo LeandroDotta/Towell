@@ -27,8 +27,9 @@ project "Editor"
 		systemversion "latest"
 		postbuildcommands 
 		{
-			-- Copy SDL2.dll to the output directory
-			"{COPY} %{extDir.SDL2}/lib/x64/SDL2.dll %{cfg.targetdir}"
+			-- Copy DLLs to the output directory
+			"{COPY} %{extDir.SDL2}/lib/x64/SDL2.dll %{cfg.targetdir}",
+			"{COPY} %{extDir.glew}/bin/Release/x64/glew32.dll %{cfg.targetdir}",
 		}
 
 
