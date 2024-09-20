@@ -22,12 +22,14 @@ project "Engine"
 	{
 		"%{extDir.SDL2}/include",
 		"%{extDir.glew}/include",
+		"%{extDir.SOIL2}/src/SOIL2",
 	}
 
 	libdirs
 	{
 		"%{extDir.SDL2}/lib/x64",
 		"%{extDir.glew}/lib/Release/x64",
+		"%{extDir.SOIL2}/lib/windows",
 	}
 
 	links
@@ -36,6 +38,7 @@ project "Engine"
 		"SDL2main",
 		"opengl32",
 		"glew32",
+		"soil2-debug.lib",
 	}
 
 
