@@ -13,18 +13,20 @@ namespace Towell
 		~Application();
 
 		bool Init();
-
 		void Run();
 
 
 	private:
+		bool running;
+		Uint32 ticksCount;
+		Window* window;
+		SDL_GLContext context;
+
 		void ProcessInput();
 		void Update();
 		void Render();
 
-		bool running;
-		Window* window;
-		SDL_GLContext context;
+		float CalculateDeltaTime();
 	};
 }
 
