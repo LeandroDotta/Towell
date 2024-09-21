@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include "GL/glew.h"
 #include "window/SDLWindow.h"
+#include <Towell.h>
 
 using namespace Towell;
 
@@ -50,6 +51,8 @@ bool Application::Init()
 	// On some platforms, GLEW will emit a benign error code, so clear it
 	glGetError();
 
+	ticksCount = SDL_GetTicks();
+
 	return true;
 }
 
@@ -65,12 +68,31 @@ void Application::Run()
 
 void Application::ProcessInput()
 {
-	// TODO: Process Input
+	SDL_Event event;
+
+	while (SDL_PollEvent(&event))
+	{
+		switch (event.type)
+		{
+		case SDL_QUIT:
+			running = false;
+			break;
+		}
+	}
+
+	const Uint8* keyState = SDL_GetKeyboardState(NULL);
+	if (keyState[SDL_SCANCODE_ESCAPE])
+	{
+		running = false;
+	}
 }
 
 void Application::Update()
 {
-	// TODO: Implement Game Lopp
+	float deltaTime = CalculateDeltaTime();
+
+	// TODO: Update GameObjects and Components
+	SDL_Log("Delta Time: %f", deltaTime);
 }
 
 void Application::Render()
@@ -79,4 +101,23 @@ void Application::Render()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	window->Update();
+}
+
+float Application::CalculateDeltaTime()
+{
+	// Wait until 16ms has elapsed since last frame
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), ticksCount + 16));
+
+	float deltaTime = (SDL_GetTicks() - ticksCount) / 1000.0f;
+
+	// Clamps the delta time to avoid long times 
+	// when the application is paused (in debbuging, for example)
+	if (deltaTime > 0.05f)
+	{
+		deltaTime = 0.05f;
+	}
+
+	ticksCount = SDL_GetTicks();
+
+	return deltaTime;
 }
