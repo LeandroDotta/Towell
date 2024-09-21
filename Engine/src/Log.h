@@ -1,6 +1,9 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
+#include <cstdarg>
+#include <ctime>
 
 namespace Towell
 {
@@ -16,10 +19,41 @@ namespace Towell
 		inline static Log* GetEngineLogger() { return s_EngineLogger; }
 		inline static Log* GetEditorLogger() { return s_EditorLogger; }
 
-		void Trace(char* message);
-		void Info(char* message);
-		void Warn(char* message);
-		void Error(char* message);
+		template <typename... MessageFormatArgs>
+		void Trace(char* message, MessageFormatArgs... args)
+		{
+			if (m_Level > LevelTrace)
+				return;
+
+			LogMessage(LevelTrace, message, args...);
+		}
+
+		template <typename... MessageFormatArgs>
+		void Info(char* message, MessageFormatArgs... args)
+		{
+			if (m_Level > LevelInfo)
+				return;
+
+			Log::LogMessage(LevelInfo, message, args...);
+		}
+
+		template <typename... MessageFormatArgs>
+		void Warn(char* message, MessageFormatArgs... args)
+		{
+			if (m_Level > LevelWarn)
+				return;
+
+			Log::LogMessage(LevelWarn, message, args...);
+		}
+
+		template <typename... MessageFormatArgs>
+		void Error(char* message, MessageFormatArgs... args)
+		{
+			if (m_Level > LevelError)
+				return;
+
+			LogMessage(LevelError, message, args...);
+		}
 
 	private:
 		static Log* s_EngineLogger;
@@ -31,7 +65,22 @@ namespace Towell
 		Log(char* name, Level level);
 		~Log();
 
-		void LogMessage(Level level, char* message);
+		template <typename... MessageFormatArgs>
+		void LogMessage(Level level, char* message, MessageFormatArgs... args)
+		{
+			// Format message
+			int bufferSize = std::snprintf(nullptr, 0, message, args...);
+			std::vector<char> messageBuffer(bufferSize + 1);
+			std::snprintf(messageBuffer.data(), messageBuffer.size(), message, args...);
+
+			// Get Current Time
+			time_t now = time(NULL);
+			std::string time = ctime(&now);
+			time.erase(time.find("\n", 0), 1);
+
+			// Print the log message
+			std::cout << Log::GetLevelColor(level) << time << " [" << this->m_Name << "] " << "(" << Log::GetLevelText(level) << "): " << messageBuffer.data() << std::endl;
+		}
 
 		inline static const char* GetLevelText(Level level) {
 			switch (level)
