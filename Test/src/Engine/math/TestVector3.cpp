@@ -225,7 +225,11 @@ void TestVector3::Run()
 		assertEqual(544.95644f, result, "Dot multiplication of vectors with complex numbers");
 	});
 
+	test("Cross", []() -> void {
+		// TODO test not implemented
+	});
+
 	test("Reflect", []() -> void {
-		// TODO: Create tests for Vector3 reflect function
+		// TODO test not implemented
 	});
 }

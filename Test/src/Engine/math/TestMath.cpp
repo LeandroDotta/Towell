@@ -16,6 +16,26 @@ void TestMath::Run()
 		assertEqual(352.798f, result3, "Should absolute value of a negative value be a positive value of itself");
 	});
 
+	test("Cos", []() -> void {
+		// TODO: test not implemented
+	});
+
+	test("Sin", []() -> void {
+		// TODO: test not implemented
+	});
+
+	test("Tan", []() -> void {
+		// TODO: test not implemented
+	});
+
+	test("Acos", []() -> void {
+		// TODO: test not implemented
+	});
+
+	test("Atan2", []() -> void {
+		// TODO: test not implemented
+	});
+
 	test("Floor", []() -> void {
 		float result = Math::Floor(77.085f);
 		assertEqual(77.0f, result, "Shoud floor a float number");
