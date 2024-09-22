@@ -9,6 +9,7 @@ namespace Towell::Test
 
 	void assertEqual(int expected, int actual, char* message);
 	void assertEqual(float expected, float actual, char* message);
+	void assertTrue(bool value, char* message);
 
 	class TestSuite
 	{
