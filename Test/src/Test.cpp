@@ -1,9 +1,12 @@
-#include <Log.h>
 #include "Test.h"
+
+#include <Log.h>
+#include <math/Math.h>
+
 
 using namespace Towell;
 
-void printSucess(char* message) 
+void printSuccess(char* message) 
 {
 	TW_INFO("\t- [PASSED] %s", message);
 }
@@ -20,7 +23,7 @@ void Test::assertEqual(int expected, int actual, char* message)
 
 	if (result)
 	{
-		printSucess(message);
+		printSuccess(message);
 		return;
 	}
 
@@ -29,13 +32,24 @@ void Test::assertEqual(int expected, int actual, char* message)
 
 void Test::assertEqual(float expected, float actual, char* message)
 {
-	bool result = expected == actual;
+	bool result = Math::AreEqual(expected, actual);
 
 	if (result)
 	{
-		printSucess(message);
+		printSuccess(message);
 		return;
 	}
 	
 	TW_ERROR("\t- [FAILED] %s\n\t- Expected: %f\n\t- Actual: %f", message, expected, actual);
+}
+
+void Test::assertTrue(bool value, char* message)
+{
+	if (value)
+	{
+		printSuccess(message);
+		return;
+	}
+
+	TW_ERROR("\t- [FAILED] %s\n\t- Value was expected to be True", message);
 }
