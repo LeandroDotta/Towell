@@ -16,6 +16,31 @@ namespace Towell::Math
 		return fabs(value);
 	}
 
+	inline float Cos(float angle)
+	{
+		return cosf(angle);
+	}
+
+	inline float Sin(float angle)
+	{
+		return sinf(angle);
+	}
+
+	inline float Tan(float angle)
+	{
+		return tanf(angle);
+	}
+
+	inline float Acos(float value)
+	{
+		return acosf(value);
+	}
+
+	inline float Atan2(float y, float x)
+	{
+		return atan2f(y, x);
+	}
+
 	inline float Floor(float value)
 	{
 		return floorf(value);
