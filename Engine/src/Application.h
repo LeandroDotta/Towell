@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include "window/Window.h"
+#include "rendering/Renderer.h"
 
 namespace Towell 
 {
@@ -19,8 +20,7 @@ namespace Towell
 	private:
 		bool running;
 		Uint32 ticksCount;
-		Window* window;
-		SDL_GLContext context;
+		Renderer* renderer;
 
 		void ProcessInput();
 		void Update();

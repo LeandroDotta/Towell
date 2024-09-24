@@ -4,6 +4,10 @@ using namespace Towell::Test;
 
 void TestMatrix4::Run()
 {
+	test("GetAsFloatPtr", []() -> void {
+		// TODO: test not implemented
+	});
+	
 	test("Operator +", []() -> void {
 		// TODO: test not implemented
 	});
