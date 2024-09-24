@@ -21,6 +21,11 @@ namespace Towell
 			memcpy(mat, elements, 16 * sizeof(float));
 		}
 
+		const float* GetAsFloatPtr() const
+		{
+			return reinterpret_cast<const float*>(&mat[0][0]);
+		}
+
 		Matrix4 operator+(const Matrix4& other) const
 		{
 			Matrix4 result;
