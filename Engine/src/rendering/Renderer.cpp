@@ -1,8 +1,8 @@
 #include "Renderer.h"
 #include "gl/glew.h"
-#include "window/SDLWindow.h"
-#include <Log.h>
 #include <filesystem>
+#include <Log.h>
+#include "window/SDLWindow.h"
 
 using namespace Towell;
 
@@ -75,9 +75,36 @@ void Renderer::RenderFrame()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// TODO: Draw all sprites
+	spriteShader->SetActive();
+	spriteVertices->SetActive();
+
+	for (auto sprite : this->sprites)
+	{
+		sprite->Draw(spriteShader);
+	}
 
 	window->Update();
+}
+
+void Renderer::AddSprite(SpriteRenderer* sprite)
+{
+	int drawOrder = sprite->GetDrawOrder();
+	auto iterator = sprites.begin();
+	for (; iterator != sprites.end(); ++iterator)
+	{
+		if (drawOrder < (*iterator)->GetDrawOrder())
+		{
+			break;
+		}
+	}
+
+	sprites.insert(iterator, sprite);
+}
+
+void Renderer::RemoveSprite(SpriteRenderer* sprite)
+{
+	auto iterator = std::find(sprites.begin(), sprites.end(), sprite);
+	sprites.erase(iterator);
 }
 
 bool Renderer::LoadShaders()
