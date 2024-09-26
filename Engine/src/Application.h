@@ -16,11 +16,17 @@ namespace Towell
 		bool Init();
 		void Run();
 
+		void AddGameObject(class GameObject* gameObject);
+		void RemoveGameObject(class GameObject* gameObject);
 
 	private:
 		bool running;
 		Uint32 ticksCount;
 		Renderer* renderer;
+
+		bool updatingGameObjects;
+		std::vector<class GameObject*> gameObjects;
+		std::vector<class GameObject*> pendingGameObjects;
 
 		void ProcessInput();
 		void Update();
