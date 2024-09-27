@@ -16,8 +16,6 @@ GameObject::~GameObject()
 	{
 		delete components.back();
 	}
-
-	delete transform;
 }
 
 void GameObject::Update(float deltaTime)

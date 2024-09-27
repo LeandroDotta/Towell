@@ -19,6 +19,12 @@ Application::Application() :
 
 Application::~Application() 
 {
+	while (!gameObjects.empty())
+	{
+		gameObjects.pop_back();
+	}
+
+	delete textureSpaceship;
 	delete renderer;
 }
 
@@ -29,28 +35,8 @@ bool Application::Init()
 
 	ticksCount = SDL_GetTicks();
 
-	Texture* texture = new Texture();
-	texture->Load("../Game/Assets/spaceship.png");
-
-	SpriteRenderer* sprite = new SpriteRenderer();
-	sprite->SetTexture(texture);
-
-	GameObject* ship = new GameObject("Player", this);
-	ship->AddComponent(sprite);
-	ship->GetTransform()->SetPosition(Vector3(-50.0f, 10.0f, 0.0f));
-
-	SpriteRenderer* sprite2 = new SpriteRenderer();
-	sprite2->SetTexture(texture);
-
-	GameObject* ship2 = new GameObject("Spaceship", this);
-	ship2->AddComponent(sprite2);
-	ship2->GetTransform()->SetPosition(Vector3(50.0f, 0.0f, 0.0f));
-
-	AddGameObject(ship);
-	AddGameObject(ship2);
-	
-	renderer->AddSprite(sprite);
-	renderer->AddSprite(sprite2);
+	textureSpaceship = new Texture();
+	textureSpaceship->Load("../Game/Assets/spaceship.png");
 
 	return true;
 }
@@ -75,6 +61,11 @@ void Application::AddGameObject(GameObject* gameObject)
 	{
 		gameObjects.emplace_back(gameObject);
 	}
+
+	for (auto sprite : gameObject->GetComponents<SpriteRenderer>())
+	{
+		renderer->AddSprite(sprite);
+	}
 }
 
 void Application::RemoveGameObject(GameObject* gameObject)
@@ -85,6 +76,13 @@ void Application::RemoveGameObject(GameObject* gameObject)
 	if (iterator != pendingGameObjects.end())
 	{
 		std::iter_swap(iterator, pendingGameObjects.end() - 1);
+		
+		GameObject* gameObjectToRemove = pendingGameObjects.back();
+		for (auto sprite : gameObjectToRemove->GetComponents<SpriteRenderer>())
+		{
+			renderer->RemoveSprite(sprite);
+		}
+
 		pendingGameObjects.pop_back();
 	}
 
@@ -94,7 +92,33 @@ void Application::RemoveGameObject(GameObject* gameObject)
 	if (iterator != gameObjects.end())
 	{
 		std::iter_swap(iterator, gameObjects.end() - 1);
+
+		GameObject* gameObjectToRemove = gameObjects.back();
+		for (auto sprite : gameObjectToRemove->GetComponents<SpriteRenderer>())
+		{
+			renderer->RemoveSprite(sprite);
+		}
+
 		gameObjects.pop_back();
+	}
+}
+
+void Application::AddScene(Scene* scene)
+{
+	scene->Load(this);
+	scenes.emplace_back(scene);
+}
+
+void Application::RemoveScene(Scene* scene)
+{
+	scene->Unload(this);
+
+	auto iterator = std::find(scenes.begin(), scenes.end(), scene);
+
+	if (iterator != scenes.end())
+	{
+		std::iter_swap(iterator, scenes.end() - 1);
+		scenes.pop_back();
 	}
 }
 
