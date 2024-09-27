@@ -24,6 +24,9 @@ namespace Towell
 		void AddComponent(class Component* component);
 		void RemoveComponent(class Component* component);
 
+		template <typename T>
+		std::vector<T*> GetComponents();
+
 		State GetState() const { return state; }
 		void SetState(State state) { this->state = state; }
 		
@@ -41,6 +44,26 @@ namespace Towell
 
 		std::vector<class Component*> components;
 	};
+
+
+	template<typename T>
+	inline std::vector<T*> GameObject::GetComponents()
+	{
+		static_assert(std::is_base_of<Component, T>::value, "T is not of type Component");
+
+		std::vector<T*> result;
+		
+		for (Component* component : components)
+		{
+			T* typeComp = dynamic_cast<T*>(component);
+			if (typeComp)
+			{
+				result.push_back(typeComp);
+			}
+		}
+
+		return result;
+	}
 }
 
 #endif // TOWELL_GAME_OBJECT_H
