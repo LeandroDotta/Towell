@@ -12,7 +12,9 @@ using namespace Towell;
 
 Application::Application() : 
 	running(true), 
-	renderer(nullptr), 
+	updatingGameObjects(false),
+	textureSpaceship(nullptr),
+	renderer(nullptr),
 	ticksCount(0.0f) 
 {
 	
@@ -25,8 +27,15 @@ Application::~Application()
 		gameObjects.pop_back();
 	}
 
-	delete textureSpaceship;
-	delete renderer;
+	if (textureSpaceship)
+	{
+		delete textureSpaceship;
+	}
+	
+	if (renderer)
+	{
+		delete renderer;
+	}
 
 	Input::Shutdown();
 }
@@ -36,12 +45,17 @@ bool Application::Init()
 	Input::Init();
 
 	renderer = new Renderer();
-	renderer->Init();
+	if (!renderer->Init())
+	{
+		TW_ERROR("Failed to initialize Renderer");
+		renderer = nullptr;
+		return false;
+	}
 
 	ticksCount = SDL_GetTicks();
 
 	textureSpaceship = new Texture();
-	textureSpaceship->Load("../Game/Assets/spaceship.png");
+	textureSpaceship->Load("../Editor/Assets/spaceship.png");
 
 	return true;
 }
