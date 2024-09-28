@@ -111,7 +111,7 @@ bool Renderer::LoadShaders()
 {
 	spriteShader = new Shader();
 
-	if (!spriteShader->Load("../Engine/Shaders/Sprite.vert", "../Engine/Shaders/Sprite.frag"))
+	if (!spriteShader->Load(SHADERS_PATH "/Sprite.vert", SHADERS_PATH "/Sprite.frag"))
 	{
 		return false;
 	}
