@@ -13,7 +13,7 @@ SampleScene::SampleScene(Application* app) : Scene(app)
 
 void SampleScene::CreateSpaceshipAtPosition(Vector3 position, Application* app)
 {
-	Texture* texture = app->GetTexture();
+	Texture* texture = Assets::GetTexture("spaceship.png");
 
 	SpriteRenderer* sprite = new SpriteRenderer();
 	sprite->SetTexture(texture);

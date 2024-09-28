@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 	TW_INFO("Starting Towell Engine...");
 
 	Application* app = new Application();
-	bool sucess = app->Init();
+	bool sucess = app->Init("./Assets");
 
 	if (sucess)
 	{
