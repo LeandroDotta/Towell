@@ -13,7 +13,6 @@ using namespace Towell;
 Application::Application() : 
 	running(true), 
 	updatingGameObjects(false),
-	textureSpaceship(nullptr),
 	renderer(nullptr),
 	ticksCount(0.0f) 
 {
@@ -27,10 +26,7 @@ Application::~Application()
 		gameObjects.pop_back();
 	}
 
-	if (textureSpaceship)
-	{
-		delete textureSpaceship;
-	}
+	Assets::Shutdown();
 	
 	if (renderer)
 	{
@@ -40,7 +36,7 @@ Application::~Application()
 	Input::Shutdown();
 }
 
-bool Application::Init()
+bool Application::Init(std::string assetsFolder)
 {
 	Input::Init();
 
@@ -52,10 +48,12 @@ bool Application::Init()
 		return false;
 	}
 
+	Assets::Init(assetsFolder);
+
 	ticksCount = SDL_GetTicks();
 
-	textureSpaceship = new Texture();
-	textureSpaceship->Load("../Editor/Assets/spaceship.png");
+	/*textureSpaceship = new Texture();
+	textureSpaceship->Load("../Editor/Assets/spaceship.png");*/
 
 	return true;
 }

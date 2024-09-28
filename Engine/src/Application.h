@@ -5,6 +5,7 @@
 #include <window/Window.h>
 #include <rendering/Renderer.h>
 #include <scene/Scene.h>
+#include <asset/Assets.h>
 
 namespace Towell 
 {
@@ -14,15 +15,13 @@ namespace Towell
 		Application();
 		~Application();
 
-		bool Init();
+		bool Init(std::string assetsFolder);
 		void Run();
 
 		void AddGameObject(class GameObject* gameObject);
 		void RemoveGameObject(class GameObject* gameObject);
 		void AddScene(class Scene* scene);
 		void RemoveScene(class Scene* scene);
-
-		Texture* GetTexture() const { return textureSpaceship; }
 	private:
 		bool running;
 		Uint32 ticksCount;
@@ -32,8 +31,6 @@ namespace Towell
 		std::vector<class GameObject*> gameObjects;
 		std::vector<class GameObject*> pendingGameObjects;
 		std::vector<class Scene*> scenes;
-
-		Texture* textureSpaceship;
 
 		void ProcessInput();
 		void Update();
