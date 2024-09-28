@@ -6,6 +6,7 @@
 #include "window/SDLWindow.h"
 #include <Towell.h>
 #include <scene/Transform.h>
+#include <input/Input.h>
 
 using namespace Towell;
 
@@ -26,10 +27,14 @@ Application::~Application()
 
 	delete textureSpaceship;
 	delete renderer;
+
+	Input::Shutdown();
 }
 
 bool Application::Init()
 {
+	Input::Init();
+
 	renderer = new Renderer();
 	renderer->Init();
 
@@ -124,6 +129,8 @@ void Application::RemoveScene(Scene* scene)
 
 void Application::ProcessInput()
 {
+	Input::GetInstance()->Update();
+
 	SDL_Event event;
 
 	while (SDL_PollEvent(&event))
@@ -136,8 +143,7 @@ void Application::ProcessInput()
 		}
 	}
 
-	const Uint8* keyState = SDL_GetKeyboardState(NULL);
-	if (keyState[SDL_SCANCODE_ESCAPE])
+	if (Input::IsKeyPressed(Input::KeyCode::Escape))
 	{
 		running = false;
 	}

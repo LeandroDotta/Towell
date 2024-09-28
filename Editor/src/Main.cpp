@@ -7,4 +7,6 @@ int main(int argc, char* argv[])
 {
 	Log::Init(Log::LevelTrace);
 	TW_INFO("Towell Editor. Yet to come :)");
+
+	return 0;
 }
