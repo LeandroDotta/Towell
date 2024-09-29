@@ -35,3 +35,16 @@ void SpriteRenderer::Draw(Shader* shader)
 	
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
+
+Vector2 SpriteRenderer::GetSize()
+{
+	if (!texture)
+	{
+		return Vector2::Zero;
+	}
+
+	return Vector2(
+		static_cast<float>(texture->GetWidth()), 
+		static_cast<float>(texture->GetWidth())
+	);
+}
