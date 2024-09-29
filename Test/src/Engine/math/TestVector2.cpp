@@ -138,6 +138,43 @@ void TestVector2::Run()
 		assertEqual(471.63144f, result.y, "Multiply two vectors with complex number for y value");
 	});
 
+	test("Clamp (member function)", []() -> void {
+		Vector2 min = Vector2(5.0f, 5.0f);
+		Vector2 max = Vector2(20.0f, 20.0f);
+
+		Vector2 result = Vector2(10.0f, 10.0f);
+		result.Clamp(min, max);
+		assertEqual(10.0f, result.x, "Should return the same x value when it is within the range");
+		assertEqual(10.0f, result.y, "Should return the same y value when it is within the range");
+
+		result = Vector2(1.0f, 1.0f);
+		result.Clamp(min, max);
+		assertEqual(5.0f, result.x, "Should return the min x value when it is less than the min value");
+		assertEqual(5.0f, result.y, "Should return the min y value when it is less than the min value");
+
+		result = Vector2(50.0f, 50.0f);
+		result.Clamp(min, max);
+		assertEqual(20.0f, result.x, "Should return the max x value when it is less than the max value");
+		assertEqual(20.0f, result.y, "Should return the max y value when it is less than the max value");
+	});
+
+	test("Clamp (static function)", []() -> void {
+		Vector2 min = Vector2(5.0f, 5.0f);
+		Vector2 max = Vector2(20.0f, 20.0f);
+
+		Vector2 result = Vector2::Clamp(Vector2(10.0f, 10.0f), min, max);
+		assertEqual(10.0f, result.x, "Should return the same x value when it is within the range");
+		assertEqual(10.0f, result.y, "Should return the same y value when it is within the range");
+
+		result = Vector2::Clamp(Vector2(1.0f, 1.0f), min, max);
+		assertEqual(5.0f, result.x, "Should return the min x value when it is less than the min value");
+		assertEqual(5.0f, result.y, "Should return the min y value when it is less than the min value");
+
+		result = Vector2::Clamp(Vector2(50.0f, 50.0f), min, max);
+		assertEqual(20.0f, result.x, "Should return the max x value when it is less than the max value");
+		assertEqual(20.0f, result.y, "Should return the max y value when it is less than the max value");
+	});
+
 	test("Length", []() -> void {
 		float result = Vector2::Zero.Length();
 		assertEqual(0.0f, result, "Length of vector 0,0 should be 0");
