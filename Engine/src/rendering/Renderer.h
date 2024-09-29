@@ -22,6 +22,8 @@ namespace Towell
 		void AddSprite(SpriteRenderer* sprite);
 		void RemoveSprite(SpriteRenderer* sprite);
 
+		Window* GetWindow() const { return window; }
+
 	private:
 		Window* window;
 		SDL_GLContext context;

@@ -7,6 +7,7 @@
 #include <Towell.h>
 #include <scene/Transform.h>
 #include <input/Input.h>
+#include <window/Screen.h>
 
 using namespace Towell;
 
@@ -27,6 +28,7 @@ Application::~Application()
 	}
 
 	Assets::Shutdown();
+	Screen::Shutdown();
 	
 	if (renderer)
 	{
@@ -48,6 +50,7 @@ bool Application::Init(std::string assetsFolder)
 		return false;
 	}
 
+	Screen::Init(renderer->GetWindow());
 	Assets::Init(assetsFolder);
 
 	ticksCount = SDL_GetTicks();
