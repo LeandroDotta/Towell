@@ -36,6 +36,28 @@ void TestMath::Run()
 		// TODO: test not implemented
 	});
 
+	test("Clamp (for integers)", []() -> void {
+		int result = Math::Clamp(10, 5, 20);
+		assertEqual(10, result, "Should return the same value when it is inside the range");
+		
+		result = Math::Clamp(1, 5, 20);
+		assertEqual(5, result, "Should return the min value when it is less than min");
+
+		result = Math::Clamp(50, 5, 20);
+		assertEqual(20, result, "Should return the max value when it is greater than max");
+	});
+
+	test("Clamp (for floats)", []() -> void {
+		float result = Math::Clamp(10.0f, 5.0f, 20.0f);
+		assertEqual(10.0f, result, "Should return the same value when it is inside the range");
+
+		result = Math::Clamp(1.0f, 5.0f, 20.0f);
+		assertEqual(5.0f, result, "Should return the min value when it is less than min");
+
+		result = Math::Clamp(50.0f, 5.0f, 20.0f);
+		assertEqual(20.0f, result, "Should return the max value when it is greater than max");
+	});
+
 	test("Floor", []() -> void {
 		float result = Math::Floor(77.085f);
 		assertEqual(77.0f, result, "Shoud floor a float number");

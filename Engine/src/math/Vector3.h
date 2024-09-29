@@ -79,6 +79,13 @@ namespace Towell
 			return *this;
 		}
 
+		void Clamp(Vector3& min, Vector3& max)
+		{
+			this->x = Math::Clamp(this->x, min.x, max.x);
+			this->y = Math::Clamp(this->y, min.y, max.y);
+			this->z = Math::Clamp(this->z, min.z, max.z);
+		}
+		
 		float Length() const
 		{
 			return Math::Sqrt(SquaredLength());
@@ -95,6 +102,15 @@ namespace Towell
 			x /= length;
 			y /= length;
 			z /= length;
+		}
+
+		static Vector3 Clamp(Vector3& value, Vector3& min, Vector3& max)
+		{
+			return Vector3(
+				Math::Clamp(value.x, min.x, max.x),
+				Math::Clamp(value.y, min.y, max.y),
+				Math::Clamp(value.z, min.z, max.z)
+			);
 		}
 
 		static Vector3 Normalize(const Vector3& vec)
