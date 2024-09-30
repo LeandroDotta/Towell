@@ -10,7 +10,7 @@ static std::unordered_map<std::string, class Texture*> textures;
 bool Assets::Init(std::string assetsDirectory)
 {
     assetsRootDirectory = assetsDirectory;
-    TW_INFO("Starting Asset Library. Assets folder: %s", assetsDirectory);
+    TW_INFO("Starting Asset Library. Assets folder: %s", assetsDirectory.c_str());
     return true;
 }
 

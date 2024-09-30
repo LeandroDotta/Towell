@@ -11,6 +11,8 @@
 
 using namespace Towell;
 
+static Application* app;
+
 Application::Application() : 
 	running(true), 
 	updatingGameObjects(false),
@@ -38,27 +40,31 @@ Application::~Application()
 	Input::Shutdown();
 }
 
-bool Application::Init(std::string assetsFolder)
+Application* Application::Init(std::string assetsFolder)
 {
+	app = new Application();
+
 	Input::Init();
 
-	renderer = new Renderer();
-	if (!renderer->Init())
+	app->renderer = new Renderer();
+	if (!app->renderer->Init())
 	{
 		TW_ERROR("Failed to initialize Renderer");
-		renderer = nullptr;
-		return false;
+		app->renderer = nullptr;
+		return nullptr;
 	}
 
-	Screen::Init(renderer->GetWindow());
+	Screen::Init(app->renderer->GetWindow());
 	Assets::Init(assetsFolder);
 
-	ticksCount = SDL_GetTicks();
+	app->ticksCount = SDL_GetTicks();
 
-	/*textureSpaceship = new Texture();
-	textureSpaceship->Load("../Editor/Assets/spaceship.png");*/
+	return app;
+}
 
-	return true;
+void Application::Shutdown()
+{
+	delete app;
 }
 
 void Application::Run()
@@ -73,53 +79,53 @@ void Application::Run()
 
 void Application::AddGameObject(GameObject* gameObject)
 {
-	if (updatingGameObjects)
+	if (app->updatingGameObjects)
 	{
-		pendingGameObjects.emplace_back(gameObject);
+		app->pendingGameObjects.emplace_back(gameObject);
 	}
 	else
 	{
-		gameObjects.emplace_back(gameObject);
+		app->gameObjects.emplace_back(gameObject);
 	}
 
 	for (auto sprite : gameObject->GetComponents<SpriteRenderer>())
 	{
-		renderer->AddSprite(sprite);
+		app->renderer->AddSprite(sprite);
 	}
 }
 
 void Application::RemoveGameObject(GameObject* gameObject)
 {
 	// Remove from pending game objects list
-	auto iterator = std::find(pendingGameObjects.begin(), pendingGameObjects.end(), gameObject);
+	auto iterator = std::find(app->pendingGameObjects.begin(), app->pendingGameObjects.end(), gameObject);
 
-	if (iterator != pendingGameObjects.end())
+	if (iterator != app->pendingGameObjects.end())
 	{
-		std::iter_swap(iterator, pendingGameObjects.end() - 1);
+		std::iter_swap(iterator, app->pendingGameObjects.end() - 1);
 		
-		GameObject* gameObjectToRemove = pendingGameObjects.back();
+		GameObject* gameObjectToRemove = app->pendingGameObjects.back();
 		for (auto sprite : gameObjectToRemove->GetComponents<SpriteRenderer>())
 		{
-			renderer->RemoveSprite(sprite);
+			app->renderer->RemoveSprite(sprite);
 		}
 
-		pendingGameObjects.pop_back();
+		app->pendingGameObjects.pop_back();
 	}
 
 	// Remove from main game objects list
-	iterator = std::find(gameObjects.begin(), gameObjects.end(), gameObject);
+	iterator = std::find(app->gameObjects.begin(), app->gameObjects.end(), gameObject);
 
-	if (iterator != gameObjects.end())
+	if (iterator != app->gameObjects.end())
 	{
-		std::iter_swap(iterator, gameObjects.end() - 1);
+		std::iter_swap(iterator, app->gameObjects.end() - 1);
 
-		GameObject* gameObjectToRemove = gameObjects.back();
+		GameObject* gameObjectToRemove = app->gameObjects.back();
 		for (auto sprite : gameObjectToRemove->GetComponents<SpriteRenderer>())
 		{
-			renderer->RemoveSprite(sprite);
+			app->renderer->RemoveSprite(sprite);
 		}
 
-		gameObjects.pop_back();
+		app->gameObjects.pop_back();
 	}
 }
 
