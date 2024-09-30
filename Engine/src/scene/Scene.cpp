@@ -27,6 +27,6 @@ void Scene::Unload(class Application* app)
 {
 	for (auto gameObject : gameObjects)
 	{
-		app->RemoveGameObject(gameObject);
+		gameObject->SetState(GameObject::Dead);
 	}
 }

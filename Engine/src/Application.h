@@ -21,7 +21,6 @@ namespace Towell
 		void Run();
 
 		static void AddGameObject(class GameObject* gameObject);
-		static void RemoveGameObject(class GameObject* gameObject);
 		void AddScene(class Scene* scene);
 		void RemoveScene(class Scene* scene);
 

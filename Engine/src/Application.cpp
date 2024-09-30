@@ -94,41 +94,6 @@ void Application::AddGameObject(GameObject* gameObject)
 	}
 }
 
-void Application::RemoveGameObject(GameObject* gameObject)
-{
-	// Remove from pending game objects list
-	auto iterator = std::find(app->pendingGameObjects.begin(), app->pendingGameObjects.end(), gameObject);
-
-	if (iterator != app->pendingGameObjects.end())
-	{
-		std::iter_swap(iterator, app->pendingGameObjects.end() - 1);
-		
-		GameObject* gameObjectToRemove = app->pendingGameObjects.back();
-		for (auto sprite : gameObjectToRemove->GetComponents<SpriteRenderer>())
-		{
-			app->renderer->RemoveSprite(sprite);
-		}
-
-		app->pendingGameObjects.pop_back();
-	}
-
-	// Remove from main game objects list
-	iterator = std::find(app->gameObjects.begin(), app->gameObjects.end(), gameObject);
-
-	if (iterator != app->gameObjects.end())
-	{
-		std::iter_swap(iterator, app->gameObjects.end() - 1);
-
-		GameObject* gameObjectToRemove = app->gameObjects.back();
-		for (auto sprite : gameObjectToRemove->GetComponents<SpriteRenderer>())
-		{
-			app->renderer->RemoveSprite(sprite);
-		}
-
-		app->gameObjects.pop_back();
-	}
-}
-
 void Application::AddScene(Scene* scene)
 {
 	scene->Load(this);
@@ -191,6 +156,25 @@ void Application::Update()
 		gameObjects.emplace_back(pending);
 	}
 	pendingGameObjects.clear();
+
+
+	// Remove all dead Game Objects
+	for (auto iterator = gameObjects.begin(); iterator != gameObjects.end(); )
+	{
+		if ((*iterator)->GetState() == GameObject::Dead)
+		{
+			for (auto sprite : (*iterator)->GetComponents<SpriteRenderer>())
+			{
+				app->renderer->RemoveSprite(sprite);
+			}
+
+			iterator = gameObjects.erase(iterator);
+		}
+		else
+		{
+			++iterator;
+		}
+	}
 }
 
 void Application::Render()
