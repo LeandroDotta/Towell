@@ -15,13 +15,16 @@ namespace Towell
 		Application();
 		~Application();
 
-		bool Init(std::string assetsFolder);
+		static Application* Init(std::string assetsFolder);
+		static void Shutdown();
+
 		void Run();
 
-		void AddGameObject(class GameObject* gameObject);
-		void RemoveGameObject(class GameObject* gameObject);
+		static void AddGameObject(class GameObject* gameObject);
+		static void RemoveGameObject(class GameObject* gameObject);
 		void AddScene(class Scene* scene);
 		void RemoveScene(class Scene* scene);
+
 	private:
 		bool running;
 		Uint32 ticksCount;

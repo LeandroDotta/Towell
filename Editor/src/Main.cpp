@@ -9,18 +9,17 @@ int main(int argc, char* argv[])
 	Log::Init(Log::LevelTrace);
 	TW_INFO("Starting Towell Engine...");
 
-	Application* app = new Application();
-	bool sucess = app->Init("./Assets");
-
-	if (sucess)
+	Application* app = Application::Init("./Assets");
+	
+	if (app)
 	{
-		SampleScene* scene = new SampleScene(app);
+		SampleScene* scene = new SampleScene();
 		app->AddScene(scene);
 		app->Run();
 		delete scene;
 	}
 
-	delete app;
+	Application::Shutdown();
 
 	return 0;
 }

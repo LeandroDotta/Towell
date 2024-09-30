@@ -10,7 +10,7 @@ namespace Towell
 	class Scene
 	{
 	public:
-		Scene(Application* app);
+		Scene();
 		~Scene();
 
 		void Load(class Application* app);

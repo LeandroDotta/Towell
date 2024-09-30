@@ -4,7 +4,7 @@
 
 using namespace Towell;
 
-GameObject::GameObject(std::string name, Application* app) : name(name), app(app), state(Active)
+GameObject::GameObject(std::string name) : name(name), state(Active)
 {
 	transform = new Transform();
 	AddComponent(transform);

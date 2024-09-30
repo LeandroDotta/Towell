@@ -16,7 +16,7 @@ namespace Towell
 			Dead
 		};
 
-		GameObject(std::string name, class Application* app);
+		GameObject(std::string name);
 		~GameObject();
 
 		void Update(float deltaTime);
@@ -40,7 +40,6 @@ namespace Towell
 		std::string name;
 
 		class Transform* transform;
-		class Application* app;
 
 		std::vector<class Component*> components;
 	};
