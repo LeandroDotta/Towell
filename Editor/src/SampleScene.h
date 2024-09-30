@@ -9,10 +9,10 @@ using namespace Towell;
 class SampleScene : public Scene
 {
 public:
-	SampleScene(Application* app);
+	SampleScene();
 
 private:
-	void CreateSpaceshipAtPosition(Vector3 position, Application* app);
+	void CreateSpaceshipAtPosition(Vector3 position);
 };
 
 #endif // TOWELL_SAMPLE_SCENE_H

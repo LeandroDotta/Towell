@@ -2,7 +2,7 @@
 
 using namespace Towell;
 
-Scene::Scene(Application* app)
+Scene::Scene()
 {
 }
 

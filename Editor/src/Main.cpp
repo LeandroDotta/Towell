@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 	
 	if (app)
 	{
-		SampleScene* scene = new SampleScene(app);
+		SampleScene* scene = new SampleScene();
 		app->AddScene(scene);
 		app->Run();
 		delete scene;
