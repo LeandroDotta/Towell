@@ -4,6 +4,7 @@
 #include <string>
 #include <GL/glew.h>
 #include <math/Matrix4.h>
+#include "Color.h"
 
 namespace Towell
 {
@@ -19,6 +20,8 @@ namespace Towell
 		void SetActive();
 
 		void SetMatrixUniform(const char* name, const Matrix4& matrix);
+		void SetColorUniform(const char* name, const Color& color);
+		void SetVector4Uniform(const char* name, float* vector);
 
 	private:
 		GLuint vertexShader;

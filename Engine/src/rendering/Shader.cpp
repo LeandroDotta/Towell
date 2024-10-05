@@ -54,6 +54,18 @@ void Shader::SetMatrixUniform(const char* name, const Matrix4& matrix)
 	glUniformMatrix4fv(loc, 1, GL_TRUE, matrix.GetAsFloatPtr());
 }
 
+void Shader::SetColorUniform(const char* name, const Color& color)
+{
+	SetVector4Uniform(name, color.ToFloatArray());
+}
+
+void Shader::SetVector4Uniform(const char* name, float* vector)
+{
+	GLuint loc = glGetUniformLocation(shaderProgram, name);
+
+	glUniform4fv(loc, 1, vector);
+}
+
 bool Shader::CompileShader(const std::string& fileName, GLenum shaderType, GLuint& outShader)
 {
 	std::ifstream shaderFile(fileName);
