@@ -92,6 +92,11 @@ void Application::AddGameObject(GameObject* gameObject)
 	{
 		app->renderer->AddSprite(sprite);
 	}
+
+	for (auto shape : gameObject->GetComponents<ShapeRenderer>())
+	{
+		app->renderer->AddShape(shape);
+	}
 }
 
 void Application::AddScene(Scene* scene)

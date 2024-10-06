@@ -1,12 +1,15 @@
 #ifndef TOWELL_RENDERER_H
 #define TOWELL_RENDERER_H
 
+#include <unordered_map>
 #include <SDL.h>
-#include "window/Window.h"
+#include "Mesh.h"
 #include "Shader.h"
-#include "VertexArray.h"
 #include "Texture.h"
-#include <scene/SpriteRenderer.h>
+#include "VertexArray.h"
+#include "window/Window.h"
+#include "scene/SpriteRenderer.h"
+#include "scene/ShapeRenderer.h"
 
 namespace Towell
 {
@@ -22,6 +25,9 @@ namespace Towell
 		void AddSprite(SpriteRenderer* sprite);
 		void RemoveSprite(SpriteRenderer* sprite);
 
+		void AddShape(ShapeRenderer* shape);
+		void RemoveShape(ShapeRenderer* shape);
+
 		Window* GetWindow() const { return window; }
 
 	private:
@@ -29,12 +35,14 @@ namespace Towell
 		SDL_GLContext context;
 
 		Shader* spriteShader;
-		VertexArray* spriteVertices;
+		Shader* shapeShader;
+		Mesh* meshTriangle;
+		Mesh* meshQuad;
 
 		std::vector<class SpriteRenderer*> sprites;
+		std::vector<class ShapeRenderer*> shapes;
 
 		bool LoadShaders();
-		void CreateSpriteVerts();
 	};
 }
 
