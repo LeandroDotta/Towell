@@ -43,6 +43,8 @@ namespace Towell
 		std::vector<class ShapeRenderer*> shapes;
 
 		bool LoadShaders();
+		void DrawSprites();
+		void DrawShapes();
 	};
 }
 

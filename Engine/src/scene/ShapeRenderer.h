@@ -1,13 +1,13 @@
 #ifndef TOWELL_SHAPE_RENDERER_H
 #define TOWELL_SHAPE_RENDERER_H
 
-#include "Component.h"
+#include "Renderer2DComponent.h"
 #include <rendering/Shader.h>
 #include <rendering/Mesh.h>
 
 namespace Towell
 {
-	class ShapeRenderer : public Component
+	class ShapeRenderer : public Renderer2DComponent
 	{
 	public:
 		enum Shape
@@ -17,16 +17,16 @@ namespace Towell
 		};
 
 		ShapeRenderer(Shape type, int drawOrder = 0, int updateOrder = 0);
-		ShapeRenderer(Shape type, int width, int height, int drawOrder = 0, int updateOrder = 0);
-		ShapeRenderer(Shape type, int width, int height, const Color color, int drawOrder = 0, int updateOrder = 0);
+		ShapeRenderer(Shape type, float width, float height, int drawOrder = 0, int updateOrder = 0);
+		ShapeRenderer(Shape type, float width, float height, const Color color, int drawOrder = 0, int updateOrder = 0);
 		~ShapeRenderer();
 
-		virtual void Draw(Shader* shader, Mesh* mesh);
+		void Draw(Shader* shader, Mesh* mesh) override;
 
-		int GetWidth() const { return width; }
-		void SetWidth(int width) { this->width = width; }
-		int GetHeight() const { return height; }
-		void SetHeight() { this->height = height; }
+		float GetWidth() const override { return width; }
+		void SetWidth(float width) { this->width = width; }
+		float GetHeight() const override { return height; }
+		void SetHeight(float height) { this->height = height; }
 		int GetDrawOrder() const { return drawOrder; }
 		void SetDrawOrder(int drawOrder) { this->drawOrder = drawOrder; }
 		Color GetColor() const { return color; }
@@ -36,8 +36,8 @@ namespace Towell
 
 
 	private:
-		int width;
-		int height;
+		float width;
+		float height;
 		int drawOrder;
 		Color color;
 		Shape type;

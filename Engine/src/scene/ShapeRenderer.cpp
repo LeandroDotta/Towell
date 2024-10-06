@@ -7,13 +7,13 @@ ShapeRenderer::ShapeRenderer(Shape type, int drawOrder, int updateOrder) : Shape
 {
 }
 
-ShapeRenderer::ShapeRenderer(Shape type, int width, int height, int drawOrder, int updateOrder) : Component(updateOrder),
+ShapeRenderer::ShapeRenderer(Shape type, float width, float height, int drawOrder, int updateOrder) : Renderer2DComponent(updateOrder),
 	type(type), width(width), height(height), drawOrder(drawOrder)
 {
 	this->color = Color::White;
 }
 
-ShapeRenderer::ShapeRenderer(Shape type, int width, int height, Color color, int drawOrder, int updateOrder) : Component(updateOrder),
+ShapeRenderer::ShapeRenderer(Shape type, float width, float height, Color color, int drawOrder, int updateOrder) : Renderer2DComponent(updateOrder),
 	type(type), width(width), height(height), color(color), drawOrder(drawOrder)
 {
 }
@@ -24,16 +24,8 @@ ShapeRenderer::~ShapeRenderer()
 
 void ShapeRenderer::Draw(Shader* shader, Mesh* mesh)
 {
-	Matrix4 scaleMatrix = Matrix4::CreateScale(
-		static_cast<float>(GetWidth()),
-		static_cast<float>(GetHeight()),
-		1.0f
-	);
-
-	Matrix4 world =  scaleMatrix * gameObject->GetTransform()->GetWorldTransform();
+	Renderer2DComponent::Draw(shader, mesh);
 
 	shader->SetColorUniform("uColor", color);
-	shader->SetMatrixUniform("uWorldTransform", world);
-
 	mesh->Draw();
 }

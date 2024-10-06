@@ -119,31 +119,8 @@ void Renderer::RenderFrame()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	spriteShader->SetActive();
-	meshQuad->SetActive();
-
-	for (auto sprite : this->sprites)
-	{
-		sprite->Draw(spriteShader);
-	}
-
-	shapeShader->SetActive();
-	for (auto shape : shapes)
-	{
-		Mesh* currentMesh;
-		switch (shape->GetType())
-		{
-		case ShapeRenderer::Shape::Triangle:
-			currentMesh = meshTriangle;
-			break;
-		case ShapeRenderer::Shape::Quad:
-			currentMesh = meshQuad;
-			break;
-		}
-
-		currentMesh->SetActive();
-		shape->Draw(shapeShader, currentMesh);
-	}
+	DrawSprites();
+	DrawShapes();
 
 	window->Update();
 }
@@ -219,4 +196,38 @@ bool Renderer::LoadShaders()
 	shapeShader->SetMatrixUniform("uViewProj", viewProjection);
 
 	return true;
+}
+
+void Renderer::DrawSprites()
+{
+	meshQuad->SetActive();
+	spriteShader->SetActive();
+
+	for (auto sprite : this->sprites)
+	{
+		sprite->Draw(spriteShader, meshQuad);
+	}
+}
+
+void Renderer::DrawShapes()
+{
+	shapeShader->SetActive();
+	
+	Mesh* currentMesh = nullptr;
+	
+	for (auto shape : shapes)
+	{
+		switch (shape->GetType())
+		{
+		case ShapeRenderer::Shape::Triangle:
+			currentMesh = meshTriangle;
+			break;
+		case ShapeRenderer::Shape::Quad:
+			currentMesh = meshQuad;
+			break;
+		}
+
+		currentMesh->SetActive();
+		shape->Draw(shapeShader, currentMesh);
+	}
 }
