@@ -1,20 +1,20 @@
 #ifndef TOWELL_SPRITE_RENDERER_H
 #define TOWELL_SPRITE_RENDERER_H
 
-#include "Component.h"
+#include "Renderer2DComponent.h"
 #include <math/Vector2.h>
 #include <rendering/Shader.h>
 #include <rendering/Texture.h>
 
 namespace Towell
 {
-	class SpriteRenderer : public Component
+	class SpriteRenderer : public Renderer2DComponent
 	{
 	public:
-		SpriteRenderer(int drawOrder = 0);
+		SpriteRenderer(int drawOrder = 0, int updateOrder = 0);
 		~SpriteRenderer();
 
-		virtual void Draw(Shader* shader);
+		void Draw(Shader* shader, Mesh* mesh) override;
 		virtual void SetTexture(Texture* texture) { this->texture = texture; }
 
 		/**
@@ -25,12 +25,12 @@ namespace Towell
 		* If there's no texture assigned to the Sprite Renderer, it returns a zero Vector
 		*/
 		Vector2 GetSize();
-		int GetDrawOrder() const { return drawOrder; }
+		
+		float GetWidth() const override;
+		float GetHeight() const override;
 
 	protected:
 		Texture* texture;
-
-		int drawOrder;
 	};
 }
 

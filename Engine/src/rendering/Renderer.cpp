@@ -1,10 +1,53 @@
 #include "Renderer.h"
-#include "gl/glew.h"
+
 #include <filesystem>
+#include "gl/glew.h"
 #include <Log.h>
+#include "CircleMesh.h"
+#include "QuadMesh.h"
+#include "TriangleMesh.h"
 #include "window/SDLWindow.h"
+#include "scene/Transform.h"
 
 using namespace Towell;
+
+static void glCheckError(const char* file, int line)
+{
+	GLenum code;
+	while ((code = glGetError()) != GL_NO_ERROR)
+	{
+		std::string error;
+
+		switch (code)
+		{
+		case GL_INVALID_ENUM:
+			error = "Invalid Enum";
+			break;
+		case GL_INVALID_VALUE:
+			error = "Invalid Value";
+			break;
+		case GL_INVALID_OPERATION:
+			error = "Invalid Operation";
+			break;
+		case GL_INVALID_FRAMEBUFFER_OPERATION:
+			error = "Invalid Framebuffer Operation";
+			break;
+		case GL_OUT_OF_MEMORY:
+			error = "Out of Memory";
+			break;
+		case GL_STACK_UNDERFLOW:
+			error = "Stack Underflow";
+			break;
+		case GL_STACK_OVERFLOW:
+			error = "Stack Overflow";
+			break;
+		}
+
+		TW_ERROR("OpenGL Error: %s (%d) | %s:%d", error.c_str(), code, file, line);
+	}
+}
+
+#define GL_CHECK_ERROR() glCheckError(__FILE__, __LINE__);
 
 Renderer::Renderer()
 {
@@ -12,7 +55,8 @@ Renderer::Renderer()
 
 Renderer::~Renderer()
 {
-	delete spriteVertices;
+	delete meshQuad;
+	delete meshTriangle;
 	spriteShader->Unload();
 	delete spriteShader;
 	SDL_GL_DeleteContext(context);
@@ -42,7 +86,7 @@ bool Renderer::Init()
 	// Create the window
 	window = new SDLWindow("Towell Engine", 1024, 786);
 	context = window->CreateOpenGLContext();
-
+	
 	// Initialize GLEW
 	glewExperimental = GL_TRUE;
 	int glewStatus = glewInit();
@@ -53,7 +97,7 @@ bool Renderer::Init()
 	}
 
 	// On some platforms, GLEW will emit a benign error code, so clear it
-	glGetError();
+	GL_CHECK_ERROR();
 
 	if (!LoadShaders())
 	{
@@ -61,8 +105,10 @@ bool Renderer::Init()
 		return false;
 	}
 
-	CreateSpriteVerts();
-
+	meshCircle = new CircleMesh();
+	meshTriangle = new TriangleMesh();
+	meshQuad = new QuadMesh();
+	
 	return true;
 }
 
@@ -75,13 +121,8 @@ void Renderer::RenderFrame()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	spriteShader->SetActive();
-	spriteVertices->SetActive();
-
-	for (auto sprite : this->sprites)
-	{
-		sprite->Draw(spriteShader);
-	}
+	DrawSprites();
+	DrawShapes();
 
 	window->Update();
 }
@@ -107,6 +148,28 @@ void Renderer::RemoveSprite(SpriteRenderer* sprite)
 	sprites.erase(iterator);
 }
 
+void Renderer::AddShape(ShapeRenderer* shape)
+{
+	int drawOrder = shape->GetDrawOrder();
+
+	auto iterator = shapes.begin();
+	for (; iterator != shapes.end(); ++iterator)
+	{
+		if (drawOrder < (*iterator)->GetDrawOrder())
+		{
+			break;
+		}
+	}
+
+	shapes.insert(iterator, shape);
+}
+
+void Renderer::RemoveShape(ShapeRenderer* shape)
+{
+	auto iterator = std::find(shapes.begin(), shapes.end(), shape);
+	shapes.erase(iterator);
+}
+
 bool Renderer::LoadShaders()
 {
 	spriteShader = new Shader();
@@ -124,22 +187,52 @@ bool Renderer::LoadShaders()
 	);
 	spriteShader->SetMatrixUniform("uViewProj", viewProjection);
 
+	shapeShader = new Shader();
+
+	if (!shapeShader->Load(SHADERS_PATH "/Shape.vert", SHADERS_PATH "/Shape.frag"))
+	{
+		return false;
+	}
+
+	shapeShader->SetActive();
+	shapeShader->SetMatrixUniform("uViewProj", viewProjection);
+
 	return true;
 }
 
-void Renderer::CreateSpriteVerts()
+void Renderer::DrawSprites()
 {
-	float vertices[] = {
-		-0.5f,  0.5f, 0.f, 0.f, 0.f, // top left
-		 0.5f,  0.5f, 0.f, 1.f, 0.f, // top right
-		 0.5f, -0.5f, 0.f, 1.f, 1.f, // bottom right
-		-0.5f, -0.5f, 0.f, 0.f, 1.f  // bottom left
-	};
+	meshQuad->SetActive();
+	spriteShader->SetActive();
 
-	unsigned int indices[] = {
-		0, 1, 2,
-		2, 3, 0
-	};
+	for (auto sprite : this->sprites)
+	{
+		sprite->Draw(spriteShader, meshQuad);
+	}
+}
 
-	spriteVertices = new VertexArray(vertices, 4, indices, 6);
+void Renderer::DrawShapes()
+{
+	shapeShader->SetActive();
+	
+	Mesh* currentMesh = nullptr;
+	
+	for (auto shape : shapes)
+	{
+		switch (shape->GetType())
+		{
+		case ShapeRenderer::Shape::Circle:
+			currentMesh = meshCircle;
+			break;
+		case ShapeRenderer::Shape::Triangle:
+			currentMesh = meshTriangle;
+			break;
+		case ShapeRenderer::Shape::Quad:
+			currentMesh = meshQuad;
+			break;
+		}
+
+		currentMesh->SetActive();
+		shape->Draw(shapeShader, currentMesh);
+	}
 }

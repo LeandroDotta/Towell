@@ -13,6 +13,7 @@ public:
 
 private:
 	void CreateSpaceshipAtPosition(Vector3 position);
+	void CreateShapeAtPosition(Vector3 position, ShapeRenderer::Shape type, Color color);
 };
 
 #endif // TOWELL_SAMPLE_SCENE_H
