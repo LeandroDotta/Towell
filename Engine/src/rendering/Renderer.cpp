@@ -3,6 +3,7 @@
 #include <filesystem>
 #include "gl/glew.h"
 #include <Log.h>
+#include "CircleMesh.h"
 #include "QuadMesh.h"
 #include "TriangleMesh.h"
 #include "window/SDLWindow.h"
@@ -104,6 +105,7 @@ bool Renderer::Init()
 		return false;
 	}
 
+	meshCircle = new CircleMesh();
 	meshTriangle = new TriangleMesh();
 	meshQuad = new QuadMesh();
 	
@@ -219,6 +221,9 @@ void Renderer::DrawShapes()
 	{
 		switch (shape->GetType())
 		{
+		case ShapeRenderer::Shape::Circle:
+			currentMesh = meshCircle;
+			break;
 		case ShapeRenderer::Shape::Triangle:
 			currentMesh = meshTriangle;
 			break;

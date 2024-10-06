@@ -12,8 +12,9 @@ namespace Towell
 	public:
 		enum Shape
 		{
-			Triangle,
-			Quad
+			Circle,
+			Quad,
+			Triangle
 		};
 
 		ShapeRenderer(Shape type, int drawOrder = 0, int updateOrder = 0);

@@ -13,7 +13,8 @@ SampleScene::SampleScene() : Scene()
 	CreateShapeAtPosition(Vector3(-300.0f, -300.0f, 0.0f), ShapeRenderer::Shape::Triangle, Color::Red);
 	CreateShapeAtPosition(Vector3(400.0f, -300.0f, 0.0f), ShapeRenderer::Shape::Triangle, Color::Blue);
 	CreateShapeAtPosition(Vector3(-400.0f, 300.0f, 0.0f), ShapeRenderer::Shape::Quad, Color::Green);
-	CreateShapeAtPosition(Vector3(400.0f, -100.0f, 0.0f), ShapeRenderer::Shape::Quad, Color::Black);
+	CreateShapeAtPosition(Vector3(400.0f, -100.0f, 0.0f), ShapeRenderer::Shape::Circle, Color::Black);
+	CreateShapeAtPosition(Vector3(0.0f, 300.0f, 0.0f), ShapeRenderer::Shape::Circle, Color::Red);
 }
 
 void SampleScene::CreateSpaceshipAtPosition(Vector3 position)

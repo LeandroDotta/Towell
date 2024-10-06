@@ -36,6 +36,7 @@ namespace Towell
 
 		Shader* spriteShader;
 		Shader* shapeShader;
+		Mesh* meshCircle;
 		Mesh* meshTriangle;
 		Mesh* meshQuad;
 
