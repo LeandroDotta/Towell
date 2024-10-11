@@ -30,3 +30,18 @@ void Scene::Unload(class Application* app)
 		gameObject->SetState(GameObject::Dead);
 	}
 }
+
+void Scene::AddGameObject(GameObject* gameObject)
+{
+	gameObjects.emplace_back(gameObject);
+}
+
+void Scene::RemoveGameObject(GameObject* gameObject)
+{
+	auto iterator = std::find(gameObjects.begin(), gameObjects.end(), gameObject);
+
+	if (iterator != gameObjects.end())
+	{
+		gameObjects.erase(iterator);
+	}
+}
