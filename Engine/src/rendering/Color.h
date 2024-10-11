@@ -1,6 +1,8 @@
 #ifndef TOWELL_COLOR_H
 #define TOWELL_COLOR_H
 
+#include <string>
+
 namespace Towell
 {
 	struct Color
@@ -17,6 +19,8 @@ namespace Towell
 		~Color();
 
 		float* ToFloatArray() const;
+
+		static Color Parse(char* hexColor);
 
 		static const Color White;
 		static const Color Black;
