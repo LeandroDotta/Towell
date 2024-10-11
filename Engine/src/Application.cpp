@@ -57,6 +57,11 @@ Application* Application::Init(std::string assetsFolder)
 	Screen::Init(app->renderer->GetWindow());
 	Assets::Init(assetsFolder);
 
+	app->physics = new Physics();
+	app->physics->SetCollisionCallback([](CircleCollider* colliderA, CircleCollider* colliderB, CollisionPhase phase, bool isTrigger, Vector3 normal, float depth) {
+		app->OnCollision(colliderA, colliderB, phase, isTrigger, normal, depth);
+	});
+
 	app->ticksCount = SDL_GetTicks();
 
 	return app;
@@ -97,6 +102,16 @@ void Application::AddGameObject(GameObject* gameObject)
 	{
 		app->renderer->AddShape(shape);
 	}
+
+	for (auto collider : gameObject->GetComponents<CircleCollider>())
+	{
+		app->physics->AddCollider(collider);
+	}
+}
+
+void Application::SetBackgroundColor(Color color)
+{
+	app->renderer->SetBackgroundColor(color);
 }
 
 void Application::AddScene(Scene* scene)
@@ -180,11 +195,88 @@ void Application::Update()
 			++iterator;
 		}
 	}
+
+	physics->Update();
 }
 
 void Application::Render()
 {
 	renderer->RenderFrame();
+}
+
+void Application::OnCollision(CircleCollider* colliderA, CircleCollider* colliderB, CollisionPhase phase, bool isTrigger, Vector3 normal, float depth)
+{
+	for (auto component : colliderA->GetGameObject()->GetAllComponents())
+	{
+		if (isTrigger)
+		{
+			if (phase == CollisionPhase::Enter)
+			{
+				component->OnTriggerEnter(colliderB);
+				component->OnTriggerStay(colliderB);
+			}
+			else if (phase == CollisionPhase::Stay)
+			{
+				component->OnTriggerStay(colliderB);
+			}
+			else if (phase == CollisionPhase::Exit)
+			{
+				component->OnTriggerExit(colliderB);
+			}
+		}
+		else
+		{
+			if (phase == CollisionPhase::Enter)
+			{
+				component->OnCollisionEnter(colliderB, normal, depth);
+				component->OnCollisionStay(colliderB, normal, depth);
+			}
+			else if (phase == CollisionPhase::Stay)
+			{
+				component->OnCollisionStay(colliderB, normal, depth);
+			}
+			else if (phase == CollisionPhase::Exit)
+			{
+				component->OnCollisionExit(colliderB, normal, depth);
+			}
+		}
+	}
+
+	for (auto component : colliderB->GetGameObject()->GetAllComponents())
+	{
+		if (isTrigger)
+		{
+			if (phase == CollisionPhase::Enter)
+			{
+				component->OnTriggerEnter(colliderA);
+				component->OnTriggerStay(colliderA);
+			}
+			else if (phase == CollisionPhase::Stay)
+			{
+				component->OnTriggerStay(colliderA);
+			}
+			else if (phase == CollisionPhase::Exit)
+			{
+				component->OnTriggerExit(colliderA);
+			}
+		}
+		else
+		{
+			if (phase == CollisionPhase::Enter)
+			{
+				component->OnCollisionEnter(colliderA, normal, depth);
+				component->OnCollisionStay(colliderA, normal, depth);
+			}
+			else if (phase == CollisionPhase::Stay)
+			{
+				component->OnCollisionStay(colliderA, normal, depth);
+			}
+			else if (phase == CollisionPhase::Exit)
+			{
+				component->OnCollisionExit(colliderA, normal, depth);
+			}
+		}
+	}
 }
 
 float Application::CalculateDeltaTime()

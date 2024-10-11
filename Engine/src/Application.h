@@ -5,7 +5,9 @@
 #include <window/Window.h>
 #include <rendering/Renderer.h>
 #include <scene/Scene.h>
+#include <scene/CircleCollider.h>
 #include <asset/Assets.h>
+#include <physics/Physics.h>
 
 namespace Towell 
 {
@@ -21,13 +23,17 @@ namespace Towell
 		void Run();
 
 		static void AddGameObject(class GameObject* gameObject);
+		static void SetBackgroundColor(Color color);
+
 		void AddScene(class Scene* scene);
 		void RemoveScene(class Scene* scene);
+
 
 	private:
 		bool running;
 		Uint32 ticksCount;
 		Renderer* renderer;
+		Physics* physics;
 
 		bool updatingGameObjects;
 		std::vector<class GameObject*> gameObjects;
@@ -37,6 +43,8 @@ namespace Towell
 		void ProcessInput();
 		void Update();
 		void Render();
+
+		void OnCollision(CircleCollider* colliderA, CircleCollider* colliderB, CollisionPhase phase, bool isTrigger, Vector3 normal, float depth);
 
 		float CalculateDeltaTime();
 	};
