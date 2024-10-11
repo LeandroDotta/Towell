@@ -188,6 +188,16 @@ void Application::Update()
 				app->renderer->RemoveSprite(sprite);
 			}
 
+			for (auto shape : (*iterator)->GetComponents<ShapeRenderer>())
+			{
+				app->renderer->RemoveShape(shape);
+			}
+
+			for (auto collider : (*iterator)->GetComponents<CircleCollider>())
+			{
+				app->physics->RemoveCollider(collider);
+			}
+
 			iterator = gameObjects.erase(iterator);
 		}
 		else

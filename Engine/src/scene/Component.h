@@ -21,6 +21,8 @@ namespace Towell
 		virtual void OnTriggerStay(class CircleCollider* other) {}
 		virtual void OnTriggerExit(class CircleCollider* other) {}
 
+		bool HasTag(std::string tag);
+
 		int GetUpdateOrder() const { return updateOrder; }
 		GameObject* GetGameObject() const { return gameObject; }
 		void SetGameObject(class GameObject* gameObject) { this->gameObject = gameObject; }

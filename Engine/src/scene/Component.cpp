@@ -20,3 +20,11 @@ Component::~Component()
 void Component::Update(float deltaTime)
 {
 }
+
+bool Component::HasTag(std::string tag)
+{
+	if (!gameObject)
+		return false;
+
+	return gameObject->GetTag() == tag;
+}

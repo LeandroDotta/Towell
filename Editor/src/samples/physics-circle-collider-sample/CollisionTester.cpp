@@ -11,6 +11,12 @@ CollisionTester::CollisionTester(ShapeRenderer* shape, int updateOrder) : Compon
 void CollisionTester::OnCollisionEnter(CircleCollider* other, Vector3 normal, float depth)
 {
 	TW_INFO("Collision ENTER \t(%s <--> %s)", GetGameObject()->GetName().c_str(), other->GetGameObject()->GetName().c_str());
+	TW_INFO("Other Collider Tag %s", other->GetGameObject()->GetTag().c_str());
+
+	if (other->HasTag("Enemy"))
+	{
+		other->GetGameObject()->SetState(GameObject::State::Dead);
+	}
 }
 
 void CollisionTester::OnCollisionStay(CircleCollider* other, Vector3 normal, float depth)
