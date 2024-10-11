@@ -12,7 +12,7 @@ public:
 
 private:
 	void CreatePlayerCircle();
-	void CreateCircleAt(char* name, Vector3 position, Color color, bool isTrigger = false);
+	void CreateCircleAt(char* name, Vector3 position, Color color, bool isTrigger = false, char* tag = nullptr);
 };
 
 #endif // TOWELL_EDITOR_CIRCLE_COLLIDER_SCENE

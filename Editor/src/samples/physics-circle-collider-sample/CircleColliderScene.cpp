@@ -19,9 +19,9 @@ CircleColliderScene::CircleColliderScene()
 	CreateCircleAt("Circle 3",Vector3(-375.0f, 0.0f, 0.0f), Color::Parse("8AC926"), true);
 
 	// Collision Circles
-	CreateCircleAt("Circle 4",Vector3(-250.0f, 79.0f, 0.0f), Color::Parse("1982C4"));
-	CreateCircleAt("Circle 5",Vector3(-300.0f, -215.0f, 0.0f), Color::Parse("6A4C93"));
-	CreateCircleAt("Circle 6",Vector3(-325.0f, -147.0f, 0.0f), Color::Parse("FF595E"));
+	CreateCircleAt("Circle 4",Vector3(-250.0f, 79.0f, 0.0f), Color::Parse("1982C4"), false, "Enemy");
+	CreateCircleAt("Circle 5",Vector3(-300.0f, -215.0f, 0.0f), Color::Parse("6A4C93"), false, "Enemy");
+	CreateCircleAt("Circle 6",Vector3(-325.0f, -147.0f, 0.0f), Color::Parse("FF595E"), false, "Enemy");
 	CreateCircleAt("Circle 7",Vector3(-50.0f, -129.0f, 0.0f), Color::Parse("06D6A0"));
 	CreateCircleAt("Circle 8",Vector3(-175.0f, -100.0f, .0f), Color::Parse("F9844A"));
 	CreateCircleAt("Circle 9",Vector3(150.0f, 150.0f, .0f), Color::Parse("ff006e"));
@@ -55,7 +55,7 @@ void CircleColliderScene::CreatePlayerCircle()
 	gameObjects.emplace_back(player);
 }
 
-void CircleColliderScene::CreateCircleAt(char* name, Vector3 position, Color color, bool isTrigger)
+void CircleColliderScene::CreateCircleAt(char* name, Vector3 position, Color color, bool isTrigger, char* tag)
 {
 	ShapeRenderer* shape = new ShapeRenderer(ShapeRenderer::Shape::Circle, 50.0f, 50.0f, color);
 	
@@ -67,6 +67,11 @@ void CircleColliderScene::CreateCircleAt(char* name, Vector3 position, Color col
 	circle->AddComponent(shape);
 	circle->AddComponent(collider);
 	circle->GetTransform()->SetPosition(position);
+
+	if (tag)
+	{
+		circle->SetTag(tag);
+	}
 
 	gameObjects.emplace_back(circle);
 }
