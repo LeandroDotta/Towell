@@ -51,6 +51,7 @@ static void glCheckError(const char* file, int line)
 
 Renderer::Renderer()
 {
+	backgroundColor = Color(0.55f, 0.57f, 0.56f, 1.0f);
 }
 
 Renderer::~Renderer()
@@ -114,7 +115,7 @@ bool Renderer::Init()
 
 void Renderer::RenderFrame()
 {
-	glClearColor(0.86f, 0.86f, 0.86f, 1.0f);
+	glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// Enable alpha blending on the color buffer
