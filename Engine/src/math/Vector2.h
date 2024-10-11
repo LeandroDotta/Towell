@@ -106,6 +106,11 @@ namespace Towell
 
 		static Vector2 Normalize(const Vector2& vec)
 		{
+			if (vec.x == 0.0f && vec.y == 0.0f)
+			{
+				return vec;
+			}
+
 			float length = vec.Length();
 			return Vector2(vec.x / length, vec.y / length);
 		}
