@@ -28,6 +28,9 @@ namespace Towell
 		void AddShape(ShapeRenderer* shape);
 		void RemoveShape(ShapeRenderer* shape);
 
+		Color GetBackgroundColor() const { return backgroundColor; }
+		void SetBackgroundColor(Color color) { this->backgroundColor = color; }
+
 		Window* GetWindow() const { return window; }
 
 	private:
@@ -39,6 +42,8 @@ namespace Towell
 		Mesh* meshCircle;
 		Mesh* meshTriangle;
 		Mesh* meshQuad;
+
+		Color backgroundColor;
 
 		std::vector<class SpriteRenderer*> sprites;
 		std::vector<class ShapeRenderer*> shapes;

@@ -26,6 +26,7 @@ namespace Towell
 
 		template <typename T>
 		std::vector<T*> GetComponents();
+		std::vector<class Component*> GetAllComponents() const { return components; }
 
 		State GetState() const { return state; }
 		void SetState(State state) { this->state = state; }
