@@ -33,12 +33,15 @@ namespace Towell
 		
 		std::string GetName() const { return name; }
 		void SetName(std::string name) { this->name = name; }
+		std::string GetTag() const { return tag; }
+		void SetTag(std::string tag) { this->tag = tag; }
 
 		class Transform* GetTransform();
 
 	private:
 		State state;
 		std::string name;
+		std::string tag;
 
 		class Transform* transform;
 
