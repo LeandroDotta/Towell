@@ -173,6 +173,7 @@ void Application::Update()
 
 	for (auto pending : pendingGameObjects)
 	{
+		pending->GetTransform()->ComputeWorldTransform();
 		gameObjects.emplace_back(pending);
 	}
 	pendingGameObjects.clear();

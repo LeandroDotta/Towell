@@ -18,6 +18,9 @@ namespace Towell
 
 	protected:
 		std::vector<class GameObject*> gameObjects;
+
+		void AddGameObject(class GameObject* gameObject);
+		void RemoveGameObject(class GameObject* gameObject);
 	};
 }
 
